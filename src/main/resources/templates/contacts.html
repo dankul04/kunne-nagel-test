@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Contact list</title>
+</head>
+<body>
+<div align="center">
+    <h1>Contact list</h1>
+    <form th:action="@{/}">
+        Back to homepage:
+        &nbsp;
+        <input type="submit" value="Homepage" />
+    </form>
+    <form th:action="@{/search}">
+        Find by name: <input type="text" name="name" id="name" size="50" th:value="${name}" required />
+        &nbsp;
+        <input type="submit" value="Search" />
+    </form>
+    <table th:if="${error == null}" border="1" cellpadding="10">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Picture</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact, iStat : ${contactPage.content}">
+            <td th:text="${contact.name}"></td>
+            <td><img th:src="${contact.url}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${error == 'No data found!'}"> No data found! </p>
+</div>
+<tr th:if="${contactPage.totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <td><a th:href="@{/contacts(size=${contactPage.size}, page=${pageNumber})}"
+       th:text=${pageNumber}
+           th:class="${pageNumber==contactPage.number + 1} ? active"></a></td>
+</tr>
+</body>
+</html>
